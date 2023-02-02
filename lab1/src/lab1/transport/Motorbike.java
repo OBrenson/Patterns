@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-public class Motorbike implements Transport, Serializable {
+public class Motorbike implements Transport, Serializable, Cloneable {
 
     private int size = 0;
 
@@ -168,6 +168,27 @@ public class Motorbike implements Transport, Serializable {
             node = node.next;
         } while (node != head);
         throw new NoSuchModelNameException(name);
+    }
+
+    @Override
+    public Motorbike clone() {
+        Motorbike motorbike = null;
+        try {
+            motorbike = (Motorbike) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        Motorbike.Model model = this.head.next;
+        while (model != head) {
+            try {
+                motorbike.deleteModel(model.name);
+                motorbike.addModel(model.name, model.price);
+                model = model.next;
+            } catch (DuplicateModelNameException | NoSuchModelNameException e) {
+                e.printStackTrace();
+            }
+        }
+        return motorbike;
     }
 
     private class Model implements Serializable {

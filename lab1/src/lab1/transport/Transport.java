@@ -26,4 +26,6 @@ public interface Transport {
     void setBrand(String brand);
 
     String getBrand();
+
+    Transport clone();
 }

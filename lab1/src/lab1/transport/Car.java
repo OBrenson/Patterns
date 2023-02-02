@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-public class Car implements Transport, Serializable {
+public class Car implements Transport, Serializable, Cloneable {
 
     public Car(String brand, int modelsLength) {
         this.brand = brand;
@@ -106,6 +106,25 @@ public class Car implements Transport, Serializable {
 
     private Optional<Model> findModelByName(String name)  {
         return Arrays.stream(models).filter(m -> m.name != null).filter(m -> m.name.equals(name)).findFirst();
+    }
+
+    @Override
+    public Car clone() {
+        Car car = null;
+        try {
+            car = (Car) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        for(Model model : this.models) {
+            try {
+                car.deleteModel(model.name);
+                car.addModel(model.name, model.price);
+            } catch (DuplicateModelNameException | NoSuchModelNameException e) {
+                e.printStackTrace();
+            }
+        }
+        return car;
     }
 
     private class Model implements Serializable {

@@ -18,9 +18,26 @@ import java.util.stream.IntStream;
 
 public class Main {
 
-    public static void main(String[] args) throws DuplicateModelNameException, NoSuchModelNameException {
+    public static void main(String[] args) throws DuplicateModelNameException, NoSuchModelNameException, CloneNotSupportedException {
         testSingleton();
         testTransport(args);
+        testPrototype(new CarFactory().createInstance("brand", 2));
+        testPrototype(new MotorbikeFactory().createInstance("brand", 2));
+    }
+
+    public static void testPrototype(Transport transport) throws CloneNotSupportedException,
+            DuplicateModelNameException, NoSuchModelNameException {
+
+        testVehicleByArrays(transport, "brand", 2, new String[]{"car1", "car2"},
+                new Double[]{10000.0, 20000.0});
+        Transport transportCopy = transport.clone();
+        assert transportCopy.getBrand().equals(transport.getBrand());
+        assert transportCopy.getModelsNum() == transport.getModelsNum();
+        for(String model : transport.getModelsNames()) {
+            assert transport.getModelPriceByName(model) == transportCopy.getModelPriceByName(model);
+        }
+        transport.setModelPriceByName("car1", 0);
+        assert transport.getModelPriceByName("car1") != transportCopy.getModelPriceByName("car1");
     }
 
     public static void testSingleton() {
