@@ -60,16 +60,6 @@ public class Main {
         testVehicle(motorbike1);
     }
 
-    private static void testVehicleFromArgs(String brand, int size, String[] names, Double[] prices)
-            throws NoSuchModelNameException, DuplicateModelNameException {
-
-        Car car = new CarFactory().createInstance(brand, size);
-        testVehicleByArrays(car, brand, size, names, prices);
-
-        Motorbike motorbike = new MotorbikeFactory().createInstance(brand, size);
-        testVehicleByArrays(motorbike, brand, size, names, prices);
-    }
-
     private static void testVehicleByArrays(Transport vehicle, String brand, int size,final String[] names, Double[] prices)
             throws NoSuchModelNameException,DuplicateModelNameException {
 
