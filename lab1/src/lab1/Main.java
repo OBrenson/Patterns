@@ -27,7 +27,7 @@ public class Main {
 
     public static void testPrototype(Transport transport) throws CloneNotSupportedException,
             DuplicateModelNameException, NoSuchModelNameException {
-
+        System.out.println("Test Prototype");
         testVehicleByArrays(transport, "brand", 2, new String[]{"car1", "car2"},
                 new Double[]{10000.0, 20000.0});
         Transport transportCopy = transport.clone();
@@ -44,7 +44,7 @@ public class Main {
         SingletonProperties sp = SingletonProperties.getInstance();
         Properties props = sp.getProperties();
         assert "org.postgresql.Driver".equals(props.getProperty("jdbc.drivers"));
-
+        assert sp == SingletonProperties.getInstance();
         System.out.println("config.properties");
         for (Object key : props.keySet()) {
             System.out.printf("%s : %s%n", key.toString(), props.getProperty(key.toString()));
@@ -52,12 +52,14 @@ public class Main {
     }
 
     public static void testTransport() throws DuplicateModelNameException, NoSuchModelNameException {
-
+        System.out.println("test Factory ");
         Transport motorbike = new CarFactory().createInstance("car", 1);
-        testVehicle(motorbike);
+        //testVehicle(motorbike);
+        System.out.println(motorbike.getClass());
 
-        Transport motorbike1 = new MotorbikeFactory().createInstance("yamaha", 1);
-        testVehicle(motorbike1);
+        Transport car = new MotorbikeFactory().createInstance("yamaha", 1);
+        //testVehicle(car);
+        System.out.println(car.getClass());
     }
 
     private static void testVehicleByArrays(Transport vehicle, String brand, int size,final String[] names, Double[] prices)
