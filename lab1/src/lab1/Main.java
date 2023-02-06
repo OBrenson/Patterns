@@ -20,7 +20,7 @@ public class Main {
 
     public static void main(String[] args) throws DuplicateModelNameException, NoSuchModelNameException, CloneNotSupportedException {
         testSingleton();
-        testTransport(args);
+        testTransport();
         testPrototype(new CarFactory().createInstance("brand", 2));
         testPrototype(new MotorbikeFactory().createInstance("brand", 2));
     }
@@ -51,35 +51,12 @@ public class Main {
         }
     }
 
-    public static void testTransport(String []args) throws DuplicateModelNameException, NoSuchModelNameException {
-        System.out.println("Test transport");
-        if (args.length != 4) {
-            System.out.println("Not enough params");
-            return;
-        }
+    public static void testTransport() throws DuplicateModelNameException, NoSuchModelNameException {
 
-        String brand = args[0];
-        int size = Integer.parseInt(args[1]);
-        String[] names = args[2].split(",");
-        Double[] prices = Arrays.stream(args[3].split(",")).map(Double::parseDouble).toArray(Double[]::new);
-        if (names.length != prices.length) {
-            System.out.println("Number of prices and names must be equal");
-            return;
-        }
-        if (Arrays.asList(names).contains("")) {
-            System.out.println("Empty names are not allowed");
-        }
-        testVehicleFromArgs(brand, size, names, prices);
-
-        Car car = new Car("lada", 1);
-        testVehicle(car);
-        car = new Car("lada-plus", 5);
-        testVehicle(car);
-
-        Transport motorbike = new MotorbikeFactory().createInstance("yamaha", 1);
+        Transport motorbike = new CarFactory().createInstance("car", 1);
         testVehicle(motorbike);
 
-        Transport motorbike1 = new MotorbikeFactory().createInstance("yamaha", 10);
+        Transport motorbike1 = new MotorbikeFactory().createInstance("yamaha", 1);
         testVehicle(motorbike1);
     }
 
