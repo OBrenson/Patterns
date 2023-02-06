@@ -2,7 +2,7 @@ package lab1.factorymethod;
 
 import lab1.transport.Motorbike;
 
-public class MotorbikeFactory extends TransportFactory {
+public class MotorbikeFactory implements TransportFactory {
 
     @Override
     public Motorbike createInstance(String name, int size) {
