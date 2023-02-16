@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
         StackPane root = new StackPane();
         MovementFacade facade = new MovementFacade(root);

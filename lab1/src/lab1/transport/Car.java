@@ -3,12 +3,13 @@ package lab1.transport;
 import lab1.exceptions.DuplicateModelNameException;
 import lab1.exceptions.ModelPriceOutOfBoundsException;
 import lab1.exceptions.NoSuchModelNameException;
+import lab3.command.PrintCommand;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class Car implements Transport, Serializable, Cloneable {
@@ -18,6 +19,8 @@ public class Car implements Transport, Serializable, Cloneable {
         this.models = new Model[modelsLength];
         IntStream.range(0, modelsLength).forEachOrdered(i -> models[i] = new Model());
     }
+
+    private PrintCommand command;
 
     private String brand;
 
@@ -127,7 +130,85 @@ public class Car implements Transport, Serializable, Cloneable {
         return car;
     }
 
-    private class Model implements Serializable {
+    public void print(OutputStream os) {
+        if (command != null) {
+            List<String> list = new ArrayList<>();
+            list.add("Brand: " + brand);
+            list.add("models: ");
+            for (Model model : models) {
+                list.add(String.format("Name: %s, Price: %s", model.name, model.price));
+            }
+            command.print(os, list.toArray(String[]::new));
+        }
+    }
+
+    public void setPrintCommand(PrintCommand command) {
+        this.command = command;
+    }
+
+    public Iterator<Model> iterator() {
+        return new ModelsIterator(this);
+    }
+
+    private class ModelsIterator implements Iterator<Model> {
+
+        private int index = -1;
+        private final Car car;
+
+        private ModelsIterator(Car car) {
+            this.car = car;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < models.length - 1;
+        }
+
+        @Override
+        public Model next() {
+            index ++;
+            return car.models[index];
+        }
+    }
+
+    public CarMemento createMemento() {
+        CarMemento memento = new CarMemento();
+        memento.setAuto(this);
+        return memento;
+    }
+
+    public void setMemento(CarMemento memento) {
+        this.models = memento.getAuto().models;
+        this.brand = memento.getAuto().brand;
+    }
+
+    public static class CarMemento {
+
+        private final ByteArrayOutputStream storage;
+
+        public CarMemento() {
+            storage = new ByteArrayOutputStream();
+        }
+
+        private void setAuto(Car car) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(storage)) {
+                oos.writeObject(car);
+                oos.flush();
+            } catch (IOException e) {
+               throw new RuntimeException(e);
+            }
+        }
+
+        private Car getAuto() {
+            try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(storage.toByteArray()))){
+                return (Car)ois.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    static class Model implements Serializable {
 
         public Model(String name, double price) {
             this.name = name;
@@ -141,5 +222,10 @@ public class Car implements Transport, Serializable, Cloneable {
         private String name;
 
         private Double price;
+
+        @Override
+        public String toString() {
+            return String.format("Name: %s, Price: %s", name, price);
+        }
     }
 }

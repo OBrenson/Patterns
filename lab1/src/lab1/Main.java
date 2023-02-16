@@ -7,11 +7,14 @@ import lab1.factorymethod.CarFactory;
 import lab1.factorymethod.MotorbikeFactory;
 import lab1.singleton.SingletonProperties;
 import lab1.transport.Car;
-import lab1.transport.Motorbike;
 import lab1.transport.Transport;
 import lab1.transport.TransportUtils;
+import lab3.command.InLineCommand;
+import lab3.command.NewLineCommand;
+import lab3.command.PrintCommand;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.IntStream;
@@ -19,10 +22,64 @@ import java.util.stream.IntStream;
 public class Main {
 
     public static void main(String[] args) throws DuplicateModelNameException, NoSuchModelNameException, CloneNotSupportedException {
-        testSingleton();
-        testTransport();
-        testPrototype(new CarFactory().createInstance("brand", 2));
-        testPrototype(new MotorbikeFactory().createInstance("brand", 2));
+//        testSingleton();
+//        testTransport();
+//        testPrototype(new CarFactory().createInstance("brand", 2));
+//        testPrototype(new MotorbikeFactory().createInstance("brand", 2));
+
+
+//        testCommand();
+//        testIterator();
+        testMemento();
+    }
+
+    private static void testMemento() {
+        System.out.println("CREATED CAR");
+        Car car = new Car("brand", 5);
+        addModels(car, 5);
+        TransportUtils.printModelsNamesAndPrices(car);
+
+        System.out.println("MODIFIED CAR");
+        Car.CarMemento memento = car.createMemento();
+        addModels(car, 10);
+        TransportUtils.printModelsNamesAndPrices(car);
+
+        System.out.println("RESTORED CAR");
+        car.setMemento(memento);
+        TransportUtils.printModelsNamesAndPrices(car);
+    }
+
+    private static void testIterator() {
+        Car car = new Car("brand", 5);
+        addModels(car, 10);
+        System.out.println("ITERATOR");
+        Iterator iterator = car.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next().toString());
+        }
+    }
+
+    private static void testCommand() {
+        Car car = new Car("brand", 5);
+        addModels(car, 5);
+        System.out.println("NEW LINE");
+        PrintCommand command = new NewLineCommand();
+        car.setPrintCommand(command);
+        car.print(System.out);
+        System.out.println("IN LINE");
+        command = new InLineCommand();
+        car.setPrintCommand(command);
+        car.print(System.out);
+    }
+
+    private static void addModels(Transport transport, int num) {
+        for(int i = 0; i < num; i++) {
+            try {
+                transport.addModel("car" + i, 100 + i);
+            } catch (DuplicateModelNameException ignored) {
+
+            }
+        }
     }
 
     public static void testPrototype(Transport transport) throws CloneNotSupportedException,
