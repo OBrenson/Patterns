@@ -1,10 +1,10 @@
 package com.example.lab3observer;
 
 import com.example.lab3observer.elements.EyeElement;
+import com.example.lab3observer.elements.MouthElement;
 import com.example.lab3observer.elements.NoseElement;
 import com.example.lab3observer.elements.UIElementHandler;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -28,6 +28,7 @@ public class HelloApplication extends Application {
         elements.add(new EyeElement(-100, -100, root));
         elements.add(new EyeElement(100, -100, root));
         elements.add(new NoseElement(0,0, root));
+        elements.add(new MouthElement(0, 120, root));
 
         elements.forEach(el -> {
             el.getFirstElement().addEventHandler(MouseEvent.MOUSE_CLICKED,
