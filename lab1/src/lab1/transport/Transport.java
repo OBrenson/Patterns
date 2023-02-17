@@ -2,6 +2,7 @@ package lab1.transport;
 
 import lab1.exceptions.DuplicateModelNameException;
 import lab1.exceptions.NoSuchModelNameException;
+import lab1.visitor.Visitor;
 
 public interface Transport {
 
@@ -28,4 +29,6 @@ public interface Transport {
     String getBrand();
 
     Transport clone();
+
+    void accept(Visitor visitor);
 }

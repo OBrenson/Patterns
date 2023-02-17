@@ -3,6 +3,8 @@ package lab1.transport;
 import lab1.exceptions.DuplicateModelNameException;
 import lab1.exceptions.ModelPriceOutOfBoundsException;
 import lab1.exceptions.NoSuchModelNameException;
+import lab1.visitor.PrintVisitor;
+import lab1.visitor.Visitor;
 import lab3.command.PrintCommand;
 
 import java.io.*;
@@ -180,6 +182,11 @@ public class Car implements Transport, Serializable, Cloneable {
     public void setMemento(CarMemento memento) {
         this.models = memento.getAuto().models;
         this.brand = memento.getAuto().brand;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 
     public static class CarMemento {

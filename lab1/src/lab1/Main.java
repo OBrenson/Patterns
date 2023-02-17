@@ -7,8 +7,11 @@ import lab1.factorymethod.CarFactory;
 import lab1.factorymethod.MotorbikeFactory;
 import lab1.singleton.SingletonProperties;
 import lab1.transport.Car;
+import lab1.transport.Motorbike;
 import lab1.transport.Transport;
 import lab1.transport.TransportUtils;
+import lab1.visitor.PrintVisitor;
+import lab1.visitor.Visitor;
 import lab3.command.InLineCommand;
 import lab3.command.NewLineCommand;
 import lab3.command.PrintCommand;
@@ -30,7 +33,22 @@ public class Main {
 
 //        testCommand();
 //        testIterator();
-        testMemento();
+//        testMemento();
+        testVisitor();
+    }
+
+    private static void testVisitor() {
+        System.out.println("VISITOR CAR");
+        Car car = new Car("brand", 5);
+        addModels(car, 5);
+
+        Visitor visitor = new PrintVisitor();
+        car.accept(visitor);
+
+        System.out.println("\nVISITOR MOTORBIKE");
+        Motorbike bike = new Motorbike("brand", 5);
+        addModels(bike, 5);
+        bike.accept(visitor);
     }
 
     private static void testMemento() {

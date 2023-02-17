@@ -3,6 +3,7 @@ package lab1.transport;
 import lab1.exceptions.DuplicateModelNameException;
 import lab1.exceptions.ModelPriceOutOfBoundsException;
 import lab1.exceptions.NoSuchModelNameException;
+import lab1.visitor.Visitor;
 
 import java.io.Serializable;
 import java.lang.reflect.*;
@@ -189,6 +190,11 @@ public class Motorbike implements Transport, Serializable, Cloneable {
             }
         }
         return motorbike;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 
     private class Model implements Serializable {

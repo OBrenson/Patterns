@@ -16,8 +16,6 @@ import java.util.Map;
 
 public class Main {
 
-    private final static String SEP = FileSystems.getDefault().getSeparator();
-
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 //        testChain();
         testStrategy(args[0]);
