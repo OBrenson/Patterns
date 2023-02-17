@@ -26,7 +26,7 @@ public class StarElement extends AbstractElement{
                 -10.0, -10.0,
                 -10.0, -10.0);
 
-        polygon.setFill(Color.YELLOWGREEN);
+        polygon.setFill(Color.RED);
         return new Group(polygon);
     }
 }

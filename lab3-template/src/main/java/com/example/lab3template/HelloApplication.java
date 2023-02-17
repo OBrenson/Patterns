@@ -38,7 +38,15 @@ public class HelloApplication extends Application {
             new Thread(f.apply(root)).start();
         });
 
+        Button btnClose = new Button("ЗАКРЫТЬ");
+        btnClose.setTranslateX(-100);
+        btnClose.setTranslateY(-200);
+        btnClose.setOnMouseClicked(mouseEvent -> {
+            stage.close();
+        });
+
         root.getChildren().add(btn);
+        root.getChildren().add(btnClose);
         Scene scene = new Scene(root, 505, 505);
         stage.setScene(scene);
         stage.show();
