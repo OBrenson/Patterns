@@ -1,0 +1,5 @@
+false
+bike
+1
+bike1
+100.0
